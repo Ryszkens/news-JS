@@ -1,14 +1,29 @@
 import './news.css';
 
+interface NewsItem {
+    author?: string;
+    source: {
+        name: string;
+    };
+    publishedAt: string;
+    title: string;
+    description: string;
+    url: string;
+    urlToImage?: string;
+}
 class News {
-    draw(data) {
+    public draw(data: NewsItem[]): void {
         const news = data.length >= 10 ? data.filter((_item, idx) => idx < 10) : data;
 
-        const fragment = document.createDocumentFragment();
-        const newsItemTemp = document.querySelector('#newsItemTemp');
+        const fragment: DocumentFragment = document.createDocumentFragment();
+        const newsItemTemp: HTMLTemplateElement | null = document.querySelector('#newsItemTemp');
 
+        if (!newsItemTemp) {
+            console.error('Template element #newsItemTemp not found');
+            return;
+        }
         news.forEach((item, idx) => {
-            const newsClone = newsItemTemp.content.cloneNode(true);
+            const newsClone: Node = newsItemTemp.content.cloneNode(true);
 
             if (idx % 2) newsClone.querySelector('.news__item').classList.add('alt');
 
